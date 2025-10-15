@@ -12,9 +12,12 @@ export const getAllUsers = async() => {
         const connection = await pool.getConnection();
         const [rows] = await connection.query(sql);
         connection.release(); //libera conexion 
+        // res.json(rows)
         return rows         
     } catch (error) {
-        res.status(500).send('ERROR, no se pudo realizar la consulta')
+        // res.status(500).send('ERROR, no se pudo realizar la consulta')
+        // console.log(error)
+        return error
     }    
 }
 
@@ -24,31 +27,31 @@ export const getUserById = async(id) => {
         const connection = await pool.getConnection();
         const [rows] = await connection.query(sql, [id]);
         //hay que pasale el sql y el dato que reemplaza el signo ?
-        return rows[0]      
-        //rows devuelve un array que contiene un objeto, con [0] tomo solo el objeto  
         connection.release();
+        // console.log(rows)
+        return rows         
     } catch (error) {
-        res.status(500).send('ERROR, no se pudo realizar la consulta')
+        // console.log(error)
+        return error
     }
 }
 
 export const createUser = async(values) => {
     // const sql = "INSERT INTO users (Name, Email, Image, Pass, Type_user) VALUES (?,?,?,?,?)";
-    const sql = 'INSERT INTO users SET ?'; //equivalente a lo de arriba
+    const sql = 'INSERT INTO user SET ?'; //equivalente a lo de arriba
     try {
         const connection = await pool.getConnection();
     
         //hay que pasale el sql y el dato que reemplaza el signo ?
         const [rows] = await connection.query(sql, [values]);
-
-        //rows devuelve muchos datos entre ellos el id creado, es lo que retorno
-        return rows.insertId
-
-        //libero conexion
         connection.release();
+        
+        // console.log(rows)
+        //rows devuelve muchos datos entre ellos el id creado, es lo que retorno
+        return rows 
 
     } catch (error) {
-        res.status(500).send('ERROR, no se pudo realizar la consulta')
+        return error
     }
 
 }
@@ -60,11 +63,10 @@ export const updateUser= async(id, values) => {
         const [rows] = await connection.query(sql, [values, id]);
         connection.release();
         // console.log(rows)
-        // console.info(rows.affectedRows)
-        return rows.affectedRows
+        return rows
        
     } catch (error) {
-        res.status(500).send('ERROR, no se pudo realizar la consulta')
+        return error
     }
 }
 
@@ -75,9 +77,8 @@ export const deleteUser = async(id) => {
         const [rows] = await connection.query(sql, [id]); 
         connection.release();
         // console.log(rows)
-        // //affectedRoews muestra la cant de registros actualizados si es igual a cero no modifico ningun registro
-        return rows.affectedRows 
+        return rows
     } catch (error) {
-        res.status(500).send('ERROR, no se pudo realizar la consulta')
+      return error
     }
 }
