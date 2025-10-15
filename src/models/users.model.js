@@ -38,7 +38,7 @@ export const getUserById = async(id) => {
 
 export const createUser = async(values) => {
     // const sql = "INSERT INTO users (Name, Email, Image, Pass, Type_user) VALUES (?,?,?,?,?)";
-    const sql = 'INSERT INTO user SET ?'; //equivalente a lo de arriba
+    const sql = 'INSERT INTO users SET ?'; //equivalente a lo de arriba
     try {
         const connection = await pool.getConnection();
     
@@ -53,7 +53,6 @@ export const createUser = async(values) => {
     } catch (error) {
         return error
     }
-
 }
 
 export const updateUser= async(id, values) => {
